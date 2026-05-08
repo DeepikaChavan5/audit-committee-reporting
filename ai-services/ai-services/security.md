@@ -3,7 +3,7 @@
 ## 📌 Project Overview
 This project is an AI-based chatbot web application built using Flask, HTML, CSS, JavaScript, and external AI APIs. This document outlines OWASP Top 10 risks and tool-specific threats along with their attack scenarios, damage potential, and mitigation strategies.
 
----
+--
 
 # ⚠️ OWASP Top 10 Risks
 
@@ -189,3 +189,38 @@ After applying fixes, a re-scan using OWASP ZAP confirmed:
 | Missing X-Frame-Options     | Medium   | Fixed    |
 | Missing X-Content-Type-Options | Medium | Fixed    |
 | Debug Mode Enabled          | Medium   | Fixed    |
+JWT Enforcement: PASS
+
+- No token → 401 Unauthorized ✔️
+- Invalid token → Rejected ("Not enough segments") ✔️
+- Valid token → Access granted ✔️
+## ZAP Scan Results
+
+- No Critical vulnerabilities found
+- No High vulnerabilities found
+- Medium issues identified:
+  - CSP Header not set
+  - Server information leakage
+
+## Action Taken
+- Implemented Flask-Talisman
+- Added security headers
+- Accepted remaining medium risks
+## Medium Risk Issues
+
+### 1. Content Security Policy (CSP) Header Not Set
+- Status: Planned
+- Action: Will improve CSP configuration in future using stricter policies
+
+### 2. Missing Anti-clickjacking Header
+- Status: Fixed
+- Action: Implemented using Flask-Talisman and X-Frame-Options header
+
+### 3. X-Content-Type-Options Header Missing
+- Status: Fixed
+- Action: Added 'nosniff' header in response
+
+### 4. Server Version Information Leakage
+- Status: Accepted
+- Reason: Low risk in development environment; will be hidden in production
+![401 Test](screenshots/401.png)
